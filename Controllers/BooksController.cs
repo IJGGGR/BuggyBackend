@@ -66,10 +66,6 @@ namespace BuggyBackend.Controllers
             {
                 return BadRequest(ex.Message);
             }
-            catch (ArgumentNullException ex)
-            {
-                return BadRequest(ex.Message);
-            }
         }
 
         [HttpPut("{id}")]
@@ -78,6 +74,10 @@ namespace BuggyBackend.Controllers
             try
             {
                 var updatedBook = _bookService.UpdateBook(id, book);
+                if (updatedBook == null)
+                {
+                    return NotFound($"Book with ID {id} not found");
+                }
                 return Ok(updatedBook);
             }
             catch (ArgumentException ex)

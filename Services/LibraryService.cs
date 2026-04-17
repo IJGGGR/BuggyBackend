@@ -21,12 +21,20 @@ namespace BuggyBackend.Services
 
         public Transaction BorrowBook(int memberId, int bookId)
         {
+            if (memberId <= 0)
+            {
+                throw new ArgumentException("Invalid member ID");
+            }
             var member = _memberRepository.GetById(memberId);
             if (member == null)
             {
                 throw new KeyNotFoundException("Member not found");
             }
 
+            if (bookId <= 0)
+            {
+                throw new ArgumentException("Invalid book ID");
+            }
             var book = _bookRepository.GetById(bookId);
             if (book == null)
             {
@@ -57,6 +65,10 @@ namespace BuggyBackend.Services
 
         public Transaction ReturnBook(int transactionId)
         {
+            if (transactionId <= 0)
+            {
+                throw new ArgumentException("Invalid transaction ID");
+            }
             var transaction = _transactionRepository.GetById(transactionId);
             if (transaction == null)
             {
@@ -79,6 +91,16 @@ namespace BuggyBackend.Services
 
         public List<Transaction> GetMemberTransactions(int memberId)
         {
+            if (memberId <= 0)
+            {
+                throw new ArgumentException("Invalid member ID");
+            }
+            var member = _memberRepository.GetById(memberId);
+            if (member == null)
+            {
+                throw new KeyNotFoundException("Member not found");
+            }
+
             return _transactionRepository.GetByMemberId(memberId);
         }
 
@@ -91,7 +113,7 @@ namespace BuggyBackend.Services
         {
             var activeTransactions = _transactionRepository.GetActiveTransactions();
             var overdueDate = DateTime.Now.AddDays(-14);
-            
+
             var overdueBookIds = activeTransactions
                 .Where(t => t.BorrowDate < overdueDate)
                 .Select(t => t.BookId)

@@ -17,7 +17,7 @@ namespace BuggyBackend.Services
             return _bookRepository.GetAll();
         }
 
-        public Book GetBookById(int id)
+        public Book? GetBookById(int id)
         {
             if (id <= 0)
             {
@@ -52,10 +52,15 @@ namespace BuggyBackend.Services
                 throw new ArgumentException("Book author is required");
             }
 
+            if (string.IsNullOrWhiteSpace(book.ISBN))
+            {
+                throw new ArgumentException("Book isbn is required");
+            }
+
             return _bookRepository.Create(book);
         }
 
-        public Book UpdateBook(int id, Book book)
+        public Book? UpdateBook(int id, Book book)
         {
             if (id <= 0)
             {
@@ -65,6 +70,21 @@ namespace BuggyBackend.Services
             if (book == null)
             {
                 throw new ArgumentNullException(nameof(book));
+            }
+
+            if (string.IsNullOrWhiteSpace(book.Title))
+            {
+                throw new ArgumentException("Book title is required");
+            }
+
+            if (string.IsNullOrWhiteSpace(book.Author))
+            {
+                throw new ArgumentException("Book author is required");
+            }
+
+            if (string.IsNullOrWhiteSpace(book.ISBN))
+            {
+                throw new ArgumentException("Book isbn is required");
             }
 
             var existingBook = _bookRepository.GetById(id);

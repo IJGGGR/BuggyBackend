@@ -32,9 +32,9 @@ namespace BuggyBackend.Repositories
             return _books;
         }
 
-        public Book GetById(int id)
+        public Book? GetById(int id)
         {
-            return _books.FirstOrDefault(b => b.Id = id);
+            return _books.FirstOrDefault(b => b.Id == id);
         }
 
         public List<Book> SearchByTitle(string title)
@@ -49,7 +49,7 @@ namespace BuggyBackend.Repositories
             return book;
         }
 
-        public Book Update(int id, Book book)
+        public Book? Update(int id, Book book)
         {
             var existingBook = GetById(id);
             if (existingBook != null)

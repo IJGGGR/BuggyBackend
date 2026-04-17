@@ -20,7 +20,7 @@ namespace BuggyBackend.Repositories
             {
                 new Member { Id = 1, Name = "Isaiah Ferguson", Email = "ifergusonlll@sjcoe.net", MembershipDate = DateTime.Now.AddYears(-2) },
                 new Member { Id = 2, Name = "Jacob Dekok", Email = "jdekok@sjcoe.net", MembershipDate = DateTime.Now.AddYears(-1) },
-                new Member { Id = 3, Name = "Ken Martinez", Email = "jmartenezlopez@sjcoe.net, MembershipDate = DateTime.Now.AddMonths(-6) }
+                new Member { Id = 3, Name = "Ken Martinez", Email = "jmartenezlopez@sjcoe.net", MembershipDate = DateTime.Now.AddMonths(-6) }
             };
             _nextId = 4;
         }
@@ -30,14 +30,14 @@ namespace BuggyBackend.Repositories
             return _members;
         }
 
-        public Member GetById(int id)
+        public Member? GetById(int id)
         {
             return _members.FirstOrDefault(m => m.Id == id);
         }
 
-        public Member GetByEmail(string email)
+        public Member? GetByEmail(string email)
         {
-            return _members.FirstOrDefault(m => m.Email = email);
+            return _members.FirstOrDefault(m => m.Email == email);
         }
 
         public Member Create(Member member)
@@ -48,7 +48,7 @@ namespace BuggyBackend.Repositories
             return member;
         }
 
-        public Member Update(int id, Member member)
+        public Member? Update(int id, Member member)
         {
             var existingMember = GetById(id);
             if (existingMember != null)

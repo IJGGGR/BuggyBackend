@@ -18,7 +18,7 @@ namespace BuggyBackend.Repositories
             return _transactions;
         }
 
-        public Transaction GetById(int id)
+        public Transaction? GetById(int id)
         {
             return _transactions.FirstOrDefault(t => t.Id == id);
         }
@@ -46,7 +46,7 @@ namespace BuggyBackend.Repositories
             return transaction;
         }
 
-        public Transaction Update(int id, Transaction transaction)
+        public Transaction? Update(int id, Transaction transaction)
         {
             var existingTransaction = GetById(id);
             if (existingTransaction != null)

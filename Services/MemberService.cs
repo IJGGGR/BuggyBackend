@@ -17,7 +17,7 @@ namespace BuggyBackend.Services
             return _memberRepository.GetAll();
         }
 
-        public Member GetMemberById(int id)
+        public Member? GetMemberById(int id)
         {
             if (id <= 0)
             {
@@ -26,7 +26,7 @@ namespace BuggyBackend.Services
             return _memberRepository.GetById(id);
         }
 
-        public Member GetMemberByEmail(string email)
+        public Member? GetMemberByEmail(string email)
         {
             if (string.IsNullOrWhiteSpace(email))
             {
@@ -61,7 +61,7 @@ namespace BuggyBackend.Services
             return _memberRepository.Create(member);
         }
 
-        public Member UpdateMember(int id, Member member)
+        public Member? UpdateMember(int id, Member member)
         {
             if (id <= 0)
             {
@@ -71,6 +71,16 @@ namespace BuggyBackend.Services
             if (member == null)
             {
                 throw new ArgumentNullException(nameof(member));
+            }
+
+            if (string.IsNullOrWhiteSpace(member.Name))
+            {
+                throw new ArgumentException("Member name is required");
+            }
+
+            if (string.IsNullOrWhiteSpace(member.Email))
+            {
+                throw new ArgumentException("Member email is required");
             }
 
             var existingMember = _memberRepository.GetById(id);
@@ -84,7 +94,7 @@ namespace BuggyBackend.Services
 
         public bool DeleteMember(int id)
         {
-            if (id < 0)
+            if (id <= 0)
             {
                 throw new ArgumentException("Invalid member ID");
             }

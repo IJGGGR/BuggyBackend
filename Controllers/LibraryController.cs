@@ -23,6 +23,10 @@ namespace BuggyBackend.Controllers
                 var transaction = _libraryService.BorrowBook(request.MemberId, request.BookId);
                 return Ok(transaction);
             }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
             catch (KeyNotFoundException ex)
             {
                 return NotFound(ex.Message);
@@ -41,6 +45,10 @@ namespace BuggyBackend.Controllers
                 var transaction = _libraryService.ReturnBook(transactionId);
                 return Ok(transaction);
             }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
             catch (KeyNotFoundException ex)
             {
                 return NotFound(ex.Message);
@@ -54,8 +62,19 @@ namespace BuggyBackend.Controllers
         [HttpGet("transactions/member/{memberId}")]
         public ActionResult<List<Transaction>> GetMemberTransactions(int memberId)
         {
-            var transactions = _libraryService.GetMemberTransactions(memberId);
-            return Ok(transactions);
+            try
+            {
+                var transactions = _libraryService.GetMemberTransactions(memberId);
+                return Ok(transactions);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
         [HttpGet("transactions/active")]

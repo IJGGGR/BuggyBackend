@@ -82,6 +82,10 @@ namespace BuggyBackend.Controllers
             try
             {
                 var updatedMember = _memberService.UpdateMember(id, member);
+                if (updatedMember == null)
+                {
+                    return NotFound($"Member with ID {id} not found");
+                }
                 return Ok(updatedMember);
             }
             catch (ArgumentException ex)
